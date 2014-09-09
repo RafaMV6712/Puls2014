@@ -7,6 +7,15 @@ var $form = $('#formulario'),
     $post = $('.item').first(),
     $todo = $('#contenedor');
 //var mql = window.matchMedia("(min-width:800px)");
+if (localStorage.getItem('autosave')) {
+    $titulo.val(sessionStorage.getItem('titulo'));
+    $url.val(sessionStorage.getItem('url'));
+}
+//setTimeOut
+var id = setInterval(function() {
+    sessionStorage.setItem('titulo', $titulo.val());
+    sessionStorage.setItem('url', $url.val());
+}, 1000);
 
 function mostrarFormulario() {
     $('#publicar_nav a').toggleClass('disabled');
@@ -17,24 +26,27 @@ function mostrarFormulario() {
 
 
 function agregarPost() {
-    var url = $url.val(),
-        titulo = $titulo.val(),
+    var titulo = $titulo.val(),
+        url = $url.val(),
         autor = $autor.val(),
-        $clone = $post.clone();
+        clone = $post.clone();
 
-    $clone.find('.titulo_item a')
+    clone.find('.titulo_item a')
         .text(titulo)
         .attr('href', url);
-    $clone.find('.autor_item a')
+    clone.find('.autor_item a')
         .text(autor);
 
-    $clone.hide();
+    clone.hide()
 
-    $list.prepend($clone);
+    $list.prepend(clone)
     mostrarFormulario();
-    $clone.fadeIn();
+    $titulo.val('');
+    $url.val('');
+    $autor.val('');
+    clone.fadeIn();
 
-    return false;
+    return false
 }
 
 //eventos
